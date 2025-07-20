@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MultiBot Chat</title>
+    <style>
+        :root {
+            --company1-color: #4361ee;
+            --company1-gradient: linear-gradient(135deg, #4361ee, #3a56d4);
+            --company2-color: #f72585;
+            --company2-gradient: linear-gradient(135deg, #f72585, #d31660);
+            --company3-color: #4cc9f0;
+            --company3-gradient: linear-gradient(135deg, #4cc9f0, #3ab7d4);
+            --company4-color: #7209b7;
+            --company4-gradient: linear-gradient(135deg, #7209b7, #5d08a0);
+            --company5-color: #4895ef;
+            --company5-gradient: linear-gradient(135deg, #4895ef, #3a7bc8);
+            
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #2b2d42;
+            --text-light: #8d99ae;
+            --border-color: #e9ecef;
+            --shadow-color: rgba(43, 45, 66, 0.08);
+            --transition-all: all 0.3s ease;
+            --primary-color: #4361ee;
+            --error-color: #f72585;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Initial Form */
+        #user-form {
+            width: 100%;
+            max-width: 450px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-header h2 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .form-header h3 {
+            font-weight: 500;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-group input {
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition-all);
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        #continue-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-all);
+            margin-top: 10px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        #continue-btn.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #continue-btn:hover {
+            background: #3a56d4;
+            transform: translateY(-2px);
+        }
+
+        /* Welcome Message */
+        #welcome-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .welcome-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Chat Container - initially hidden */
+        #chat-container {
+            display: none;
+            --current-gradient: var(--company1-gradient);
+            width: 100%;
+            max-width: 450px;
+            height: 650px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Chat Styles */
+        #company-tabs {
+            display: flex;
+            background: #f1f3f5;
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .company-tab {
+            flex: 1;
+            padding: 10px 5px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: var(--transition-all);
+            border: 1px solid transparent;
+            background: none;
+            color: var(--text-light);
+        }
+
+        .company-tab.active {
+            background: var(--card-bg);
+            box-shadow: 0 2px 8px var(--shadow-color);
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .company-tab.company1.active { border-color: var(--company1-color); color: var(--company1-color); }
+        .company-tab.company2.active { border-color: var(--company2-color); color: var(--company2-color); }
+        .company-tab.company3.active { border-color: var(--company3-color); color: var(--company3-color); }
+        .company-tab.company4.active { border-color: var(--company4-color); color: var(--company4-color); }
+        .company-tab.company5.active { border-color: var(--company5-color); color: var(--company5-color); }
+
+        #chat-header {
+            background: var(--current-gradient);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        #chat-header h2 {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+            margin-left: auto;
+            opacity: 0.9;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4ad66d;
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: pulse 1.5s infinite;
+        }
+
+        #chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f5f7fb;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            font-size: 0.95rem;
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .user-message {
+            background: var(--current-gradient);
+            color: white;
+            border-bottom-right-radius: 4px;
+            align-self: flex-end;
+        }
+
+        .bot-message {
+            background: var(--card-bg);
+            color: var(--text-color);
+            border-bottom-left-radius: 4px;
+            align-self: flex-start;
+        }
+
+        .message-time {
+            display: block;
+            font-size: 0.7rem;
+            margin-top: 4px;
+            opacity: 0.7;
+            text-align: right;
+        }
+
+        #chat-input-container {
+            display: flex;
+            padding: 15px;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            gap: 10px;
+        }
+
+        #chat-input {
+            flex-grow: 1;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            outline: none;
+            font-size: 0.95rem;
+            transition: var(--transition-all);
+        }
+
+        #chat-input:focus {
+            border-color: var(--company1-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        #send-btn {
+            background: var(--current-gradient);
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: var(--transition-all);
+        }
+
+        #report-btn {
+            background: var(--error-color);
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: var(--transition-all);
+            margin-right: 10px;
+        }
+
+        #send-btn:hover, #report-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Report Issue Modal */
+        #report-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .report-content {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            max-width: 400px;
+            width: 90%;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .report-content h3 {
+            color: var(--error-color);
+            margin-bottom: 15px;
+        }
+
+        #report-text {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .report-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .report-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition-all);
+        }
+
+        #cancel-report {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+        }
+
+        #submit-report {
+            background: var(--error-color);
+            color: white;
+            border: none;
+        }
+
+        /* Thank you message */
+        #thank-you-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1001;
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Animations */
+        .typing-indicator {
+            display: inline-flex;
+            padding: 12px 16px;
+            background: var(--card-bg);
+            border-radius: 18px;
+            align-self: flex-start;
+            gap: 6px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-light);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
+        .company1-theme { --current-gradient: var(--company1-gradient); }
+        .company2-theme { --current-gradient: var(--company2-gradient); }
+        .company3-theme { --current-gradient: var(--company3-gradient); }
+        .company4-theme { --current-gradient: var(--company4-gradient); }
+        .company5-theme { --current-gradient: var(--company5-gradient); }
+    </style>
+</head>
+<body>
+    <!-- Initial Form -->
+    <div id="user-form">
+        <div class="form-header">
+            <h2>Welcome to MultiBot</h2>
+            <h3>Please enter your details to continue</h3>
+        </div>
+        <div class="form-group">
+            <label for="first-name">First Name</label>
+            <input type="text" id="first-name" placeholder="Enter your first name" required>
+        </div>
+        <div class="form-group">
+            <label for="last-name">Last Name</label>
+            <input type="text" id="last-name" placeholder="Enter your last name" required>
+        </div>
+        <div class="form-group">
+            <label for="user-id">ID</label>
+            <input type="text" id="user-id" placeholder="Enter your ID" required>
+        </div>
+        <button id="continue-btn">Continue</button>
+    </div>
+
+    <!-- Welcome Message -->
+    <div id="welcome-message">
+        <div class="welcome-content">
+            <h2>Welcome, <span id="welcome-name"></span>!</h2>
+            <p>Please remember that all conversations are recorded and stored in our database.</p>
+        </div>
+    </div>
+
+    <!-- Chat Container - initially hidden -->
+    <div id="chat-container" class="company1-theme">
+        <div id="company-tabs">
+            <button class="company-tab company1 active" data-company="1">Soholighting</button>
+            <button class="company-tab company2" data-company="2">Elesi</button>
+            <button class="company-tab company3" data-company="3">Enkin</button>
+            <button class="company-tab company4" data-company="4">Lighteningbox</button>
+            <button class="company-tab company5" data-company="5">Lieber</button>
+        </div>
+        
+        <div id="chat-header">
+            <h2>Chat with Soholighting</h2>
+            <div class="status">
+                <span class="status-dot"></span>
+                Online
+            </div>
+        </div>
+        
+        <div id="chat-messages">
+            <div class="message bot-message">
+                Welcome to Soholighting! How can I help you?
+                <span class="message-time">Now</span>
+            </div>
+        </div>
+        
+        <div id="chat-input-container">
+            <button id="report-btn" title="Report an issue">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+            </button>
+            <input type="text" id="chat-input" placeholder="Type your message...">
+            <button id="send-btn" title="Send message">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 2L11 13"></path>
+                    <path d="M22 2l-7 20-4-9-9-4 20-7z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Report Issue Modal -->
+    <div id="report-modal">
+        <div class="report-content">
+            <h3>Found a bug?</h3>
+            <p>Tell us more and we'll fix it as soon as possible.</p>
+            <textarea id="report-text" placeholder="Describe the issue you encountered..."></textarea>
+            <div class="report-actions">
+                <button class="report-btn" id="cancel-report">Cancel</button>
+                <button class="report-btn" id="submit-report">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thank you message -->
+    <div id="thank-you-message">
+        Thank you for your report!
+    </div>
+
+    <script>
+        // User data
+        let userData = {
+            firstName: '',
+            lastName: '',
+            userId: ''
+        };
+
+        // Form validation
+        const firstNameInput = document.getElementById('first-name');
+        const lastNameInput = document.getElementById('last-name');
+        const userIdInput = document.getElementById('user-id');
+        const continueBtn = document.getElementById('continue-btn');
+
+        function validateForm() {
+            const isValid = firstNameInput.value.trim() !== '' && 
+                           lastNameInput.value.trim() !== '' && 
+                           userIdInput.value.trim() !== '';
+            
+            if (isValid) {
+                continueBtn.classList.add('active');
+            } else {
+                continueBtn.classList.remove('active');
+            }
+        }
+
+        firstNameInput.addEventListener('input', validateForm);
+        lastNameInput.addEventListener('input', validateForm);
+        userIdInput.addEventListener('input', validateForm);
+
+        // Continue button handler
+        continueBtn.addEventListener('click', function() {
+            userData = {
+                firstName: firstNameInput.value.trim(),
+                lastName: lastNameInput.value.trim(),
+                userId: userIdInput.value.trim()
+            };
+
+            // Show welcome message
+            document.getElementById('welcome-name').textContent = 
+                `${userData.firstName} ${userData.lastName}`;
+            document.getElementById('welcome-message').style.display = 'flex';
+            
+            // Hide form
+            document.getElementById('user-form').style.display = 'none';
+
+            // After 3 seconds, show chat
+            setTimeout(() => {
+                document.getElementById('welcome-message').style.display = 'none';
+                document.getElementById('chat-container').style.display = 'flex';
+                
+                // Update welcome message in chat
+                const welcomeMessage = `Welcome, ${userData.firstName}! How can I help you today?`;
+                chatHistory['1'][0].text = welcomeMessage;
+                loadChatHistory('1');
+            }, 3000);
+        });
+
+        // Companies configuration
+        const companies = {
+            1: { name: "Soholighting", endpoint: "https://your-n8n.com/webhook/soholighting" },
+            2: { name: "Elesi", endpoint: "https://your-n8n.com/webhook/elesi" },
+            3: { name: "Enkin", endpoint: "https://your-n8n.com/webhook/enkin" },
+            4: { name: "Lighteningbox", endpoint: "https://your-n8n.com/webhook/lighteningbox" },
+            5: { name: "Lieber", endpoint: "https://your-n8n.com/webhook/lieber" }
+        };
+        
+        // Chat history initialization
+        const chatHistory = {};
+        Object.keys(companies).forEach(companyId => {
+            chatHistory[companyId] = [{
+                sender: 'bot',
+                text: `Welcome to ${companies[companyId].name}! How can I help you?`,
+                time: 'Now'
+            }];
+        });
+        
+        let currentCompany = '1';
+        
+        // DOM elements
+        const companyTabs = document.querySelectorAll('.company-tab');
+        const chatHeader = document.getElementById('chat-header').querySelector('h2');
+        const chatContainer = document.getElementById('chat-container');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const reportBtn = document.getElementById('report-btn');
+        const reportModal =
