@@ -17,15 +17,16 @@
             --company5-color: #4895ef;
             --company5-gradient: linear-gradient(135deg, #4895ef, #3a7bc8);
             
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-color: #2b2d42;
+            --bg-color: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --text-color: #e0e0e0;
             --text-light: #8d99ae;
-            --border-color: #e9ecef;
-            --shadow-color: rgba(43, 45, 66, 0.08);
+            --border-color: #2a2a2a;
+            --shadow-color: rgba(0, 0, 0, 0.3);
             --transition-all: all 0.3s ease;
             --primary-color: #4361ee;
             --error-color: #f72585;
+            --gold-accent: #ffe0a6;
         }
 
         * {
@@ -44,71 +45,131 @@
             padding: 20px;
         }
 
-        /* Initial Form */
+        /* Formularz */
         #user-form {
             width: 100%;
             max-width: 450px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px var(--shadow-color);
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            padding: 2rem 3rem;
+            display: grid;
+            place-items: center;
+            gap: 2rem;
+            border: 1px solid transparent;
+            border-image: linear-gradient(transparent, var(--gold-accent), transparent) 1;
+            border-width: 0 2px 0px 2px;
+            background: radial-gradient(
+                100% 61.73% at 100% 50%,
+                rgba(255, 224, 166, 0.05) 0%,
+                transparent 100%
+                ),
+                radial-gradient(
+                91.09% 56.23% at 0% 50%,
+                rgba(255, 224, 166, 0.05) 0%,
+                transparent 100%
+                );
+            position: relative;
         }
 
-        .form-header {
-            text-align: center;
-            margin-bottom: 20px;
+        #user-form::before,
+        #user-form::after {
+            content: "";
+            position: absolute;
+            border: 1px solid transparent;
+            border: inherit;
+            z-index: -1;
+        }
+
+        #user-form::before {
+            inset: -1rem;
+            opacity: 15%;
+        }
+
+        #user-form::after {
+            inset: -2rem;
+            opacity: 5%;
         }
 
         .form-header h2 {
-            color: var(--primary-color);
-            margin-bottom: 5px;
+            color: var(--gold-accent);
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 0.5rem;
+            text-transform: uppercase;
+            background: linear-gradient(rgb(210, 210, 210), rgb(150, 150, 150));
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            margin-bottom: 1rem;
         }
 
         .form-header h3 {
-            font-weight: 500;
-            color: var(--text-color);
-            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 300;
+            font-size: 0.9rem;
         }
 
         .form-group {
+            width: 100%;
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
 
         .form-group label {
-            font-weight: 500;
-            color: var(--text-color);
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
         }
 
         .form-group input {
-            padding: 12px 16px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid transparent;
+            border-image: radial-gradient(
+                circle,
+                rgba(255, 255, 255, 0.445) 0%,
+                rgba(0, 0, 0, 0) 100%
+            ) 1;
+            border-width: 0 0 1px 0;
+            padding: 0.8rem 1rem;
+            color: white;
             font-size: 1rem;
             transition: var(--transition-all);
         }
 
         .form-group input:focus {
-            border-color: var(--primary-color);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+            color: var(--gold-accent);
+            background: radial-gradient(
+                47.3% 73.08% at 50% 94.23%,
+                rgba(255, 224, 166, 0.1) 5%,
+                rgba(0, 0, 0, 0) 100%
+            );
+            border-image: radial-gradient(circle, var(--gold-accent) 0%, transparent 100%) 1;
         }
 
         #continue-btn {
-            background: var(--primary-color);
-            color: white;
+            width: 100%;
+            position: relative;
+            background: none;
             border: none;
-            padding: 14px;
-            border-radius: 8px;
+            padding: 1rem;
+            color: var(--gold-accent);
             font-size: 1rem;
-            font-weight: 500;
             cursor: pointer;
-            transition: var(--transition-all);
-            margin-top: 10px;
+            transition: all 0.2s ease-in-out;
+            background: radial-gradient(
+                100% 45% at 100% 50%,
+                rgba(255, 224, 166, 0.084) 0%,
+                rgba(115, 115, 115, 0) 100%
+                ),
+                radial-gradient(
+                100% 45% at 0% 50%,
+                rgba(255, 224, 166, 0.084) 0%,
+                rgba(115, 115, 115, 0) 100%
+                );
+            border: 1px solid transparent;
+            border-image: linear-gradient(transparent, var(--gold-accent), transparent) 1;
+            border-width: 0 1px 0 1px;
             opacity: 0.5;
             pointer-events: none;
         }
@@ -119,8 +180,26 @@
         }
 
         #continue-btn:hover {
-            background: #3a56d4;
-            transform: translateY(-2px);
+            animation: flicker 0.5s infinite;
+            width: 105%;
+        }
+
+        #continue-btn:active {
+            width: 95%;
+        }
+
+        @keyframes flicker {
+            0% { filter: brightness(100%); }
+            10% { filter: brightness(80%); }
+            20% { filter: brightness(120%); }
+            30% { filter: brightness(90%); }
+            40% { filter: brightness(110%); }
+            50% { filter: brightness(100%); }
+            60% { filter: brightness(85%); }
+            70% { filter: brightness(95%); }
+            80% { filter: brightness(105%); }
+            90% { filter: brightness(115%); }
+            100% { filter: brightness(100%); }
         }
 
         /* Welcome Message */
@@ -138,83 +217,128 @@
         }
 
         .welcome-content {
-            background: white;
+            background: var(--card-bg);
             padding: 30px;
             border-radius: 16px;
             max-width: 400px;
             text-align: center;
             animation: fadeIn 0.3s ease-out;
+            border: 1px solid var(--gold-accent);
         }
 
-        /* Chat Container - initially hidden */
+        .welcome-content h2 {
+            color: var(--gold-accent);
+            margin-bottom: 15px;
+        }
+
+        .welcome-content p {
+            color: var(--text-light);
+        }
+
+        /* Nowy styl Chat Container */
         #chat-container {
             display: none;
-            --current-gradient: var(--company1-gradient);
             width: 100%;
             max-width: 450px;
             height: 650px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px var(--shadow-color);
-            flex-direction: column;
-            overflow: hidden;
+            padding: 2rem;
+            grid-template-rows: auto auto 1fr auto;
+            gap: 1.5rem;
+            border: 1px solid transparent;
+            border-image: linear-gradient(transparent, var(--gold-accent), transparent) 1;
+            border-width: 0 2px 0px 2px;
+            background: radial-gradient(
+                100% 61.73% at 100% 50%,
+                rgba(255, 224, 166, 0.05) 0%,
+                transparent 100%
+                ),
+                radial-gradient(
+                91.09% 56.23% at 0% 50%,
+                rgba(255, 224, 166, 0.05) 0%,
+                transparent 100%
+                );
             position: relative;
         }
 
-        /* Chat Styles */
+        #chat-container::before,
+        #chat-container::after {
+            content: "";
+            position: absolute;
+            border: 1px solid transparent;
+            border: inherit;
+            z-index: -1;
+        }
+
+        #chat-container::before {
+            inset: -1rem;
+            opacity: 15%;
+        }
+
+        #chat-container::after {
+            inset: -2rem;
+            opacity: 5%;
+        }
+
         #company-tabs {
             display: flex;
-            background: #f1f3f5;
-            padding: 8px;
-            border-bottom: 1px solid var(--border-color);
+            gap: 8px;
+            background: transparent;
+            padding: 0;
+            border-bottom: 1px solid rgba(255, 224, 166, 0.1);
+            padding-bottom: 1rem;
         }
 
         .company-tab {
             flex: 1;
             padding: 10px 5px;
             text-align: center;
-            border-radius: 8px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 0.8rem;
             font-weight: 500;
             transition: var(--transition-all);
             border: 1px solid transparent;
-            background: none;
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-light);
         }
 
         .company-tab.active {
-            background: var(--card-bg);
-            box-shadow: 0 2px 8px var(--shadow-color);
+            background: rgba(255, 255, 255, 0.1);
             font-weight: 600;
             color: var(--text-color);
+            border-image: linear-gradient(transparent, var(--gold-accent), transparent) 1;
+            border-width: 0 0 1px 0;
         }
 
-        .company-tab.company1.active { border-color: var(--company1-color); color: var(--company1-color); }
-        .company-tab.company2.active { border-color: var(--company2-color); color: var(--company2-color); }
-        .company-tab.company3.active { border-color: var(--company3-color); color: var(--company3-color); }
-        .company-tab.company4.active { border-color: var(--company4-color); color: var(--company4-color); }
-        .company-tab.company5.active { border-color: var(--company5-color); color: var(--company5-color); }
+        .company-tab.company1.active { color: var(--company1-color); }
+        .company-tab.company2.active { color: var(--company2-color); }
+        .company-tab.company3.active { color: var(--company3-color); }
+        .company-tab.company4.active { color: var(--company4-color); }
+        .company-tab.company5.active { color: var(--company5-color); }
 
         #chat-header {
-            background: var(--current-gradient);
-            color: white;
-            padding: 15px 20px;
+            background: transparent;
+            color: var(--gold-accent);
+            padding: 0;
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 224, 166, 0.1);
+            padding-bottom: 1rem;
         }
 
         #chat-header h2 {
             font-weight: 600;
             font-size: 1.2rem;
+            color: var(--gold-accent);
         }
 
         .status {
             display: flex;
             align-items: center;
             font-size: 0.8rem;
-            margin-left: auto;
             opacity: 0.9;
+            color: var(--text-light);
         }
 
         .status-dot {
@@ -228,37 +352,38 @@
 
         #chat-messages {
             flex-grow: 1;
-            padding: 20px;
+            padding: 1rem 0;
             overflow-y: auto;
-            background-color: #f5f7fb;
             display: flex;
             flex-direction: column;
             gap: 12px;
+            border-bottom: 1px solid rgba(255, 224, 166, 0.1);
         }
 
         .message {
             max-width: 80%;
             padding: 12px 16px;
-            border-radius: 18px;
+            border-radius: 8px;
             line-height: 1.4;
             font-size: 0.95rem;
             position: relative;
             animation: fadeIn 0.3s ease-out;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .user-message {
-            background: var(--current-gradient);
-            color: white;
+            background: rgba(255, 224, 166, 0.1);
+            color: var(--gold-accent);
             border-bottom-right-radius: 4px;
             align-self: flex-end;
+            border: 1px solid rgba(255, 224, 166, 0.2);
         }
 
         .bot-message {
-            background: var(--card-bg);
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-color);
             border-bottom-left-radius: 4px;
             align-self: flex-start;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .message-time {
@@ -267,63 +392,58 @@
             margin-top: 4px;
             opacity: 0.7;
             text-align: right;
+            color: var(--text-light);
         }
 
         #chat-input-container {
             display: flex;
-            padding: 15px;
-            background: var(--card-bg);
-            border-top: 1px solid var(--border-color);
+            padding: 0;
+            background: transparent;
             gap: 10px;
+            align-items: center;
         }
 
         #chat-input {
             flex-grow: 1;
             padding: 12px 16px;
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
+            border-radius: 4px;
             outline: none;
             font-size: 0.95rem;
             transition: var(--transition-all);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid transparent;
+            border-image: linear-gradient(transparent, var(--gold-accent), transparent) 1;
+            border-width: 0 0 1px 0;
         }
 
         #chat-input:focus {
-            border-color: var(--company1-color);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+            color: var(--gold-accent);
+            background: radial-gradient(
+                47.3% 73.08% at 50% 94.23%,
+                rgba(255, 224, 166, 0.1) 5%,
+                rgba(0, 0, 0, 0) 100%
+            );
+            border-image: radial-gradient(circle, var(--gold-accent) 0%, transparent 100%) 1;
         }
 
-        #send-btn {
-            background: var(--current-gradient);
-            color: white;
-            border: none;
+        #send-btn, #report-btn {
+            background: rgba(255, 224, 166, 0.1);
+            color: var(--gold-accent);
+            border: 1px solid rgba(255, 224, 166, 0.2);
             width: 44px;
             height: 44px;
-            border-radius: 50%;
+            border-radius: 4px;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
             transition: var(--transition-all);
-        }
-
-        #report-btn {
-            background: var(--error-color);
-            color: white;
-            border: none;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: var(--transition-all);
-            margin-right: 10px;
         }
 
         #send-btn:hover, #report-btn:hover {
+            background: rgba(255, 224, 166, 0.2);
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         /* Report Issue Modal */
@@ -341,16 +461,22 @@
         }
 
         .report-content {
-            background: white;
+            background: var(--card-bg);
             padding: 25px;
             border-radius: 16px;
             max-width: 400px;
             width: 90%;
             animation: fadeIn 0.3s ease-out;
+            border: 1px solid var(--error-color);
         }
 
         .report-content h3 {
             color: var(--error-color);
+            margin-bottom: 15px;
+        }
+
+        .report-content p {
+            color: var(--text-light);
             margin-bottom: 15px;
         }
 
@@ -362,6 +488,8 @@
             margin-bottom: 15px;
             min-height: 100px;
             resize: vertical;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
         }
 
         .report-actions {
@@ -380,6 +508,7 @@
         #cancel-report {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
+            color: var(--text-color);
         }
 
         #submit-report {
@@ -394,33 +523,18 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
+            background: var(--card-bg);
             padding: 20px 30px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             z-index: 1001;
             display: none;
             animation: fadeIn 0.3s ease-out;
+            border: 1px solid var(--gold-accent);
+            color: var(--gold-accent);
         }
 
         /* Animations */
-        .typing-indicator {
-            display: inline-flex;
-            padding: 12px 16px;
-            background: var(--card-bg);
-            border-radius: 18px;
-            align-self: flex-start;
-            gap: 6px;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--text-light);
-            border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out;
-        }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -437,18 +551,33 @@
             30% { transform: translateY(-5px); }
         }
 
-        .company1-theme { --current-gradient: var(--company1-gradient); }
-        .company2-theme { --current-gradient: var(--company2-gradient); }
-        .company3-theme { --current-gradient: var(--company3-gradient); }
-        .company4-theme { --current-gradient: var(--company4-gradient); }
-        .company5-theme { --current-gradient: var(--company5-gradient); }
+        .typing-indicator {
+            display: inline-flex;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            align-self: flex-start;
+            gap: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-light);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
     </style>
 </head>
 <body>
     <!-- Initial Form -->
     <div id="user-form">
         <div class="form-header">
-            <h2>Welcome to MultiBot</h2>
+            <h2>MultiBot</h2>
             <h3>Please enter your details to continue</h3>
         </div>
         <div class="form-group">
@@ -475,7 +604,7 @@
     </div>
 
     <!-- Chat Container - initially hidden -->
-    <div id="chat-container" class="company1-theme">
+    <div id="chat-container">
         <div id="company-tabs">
             <button class="company-tab company1 active" data-company="1">Soholighting</button>
             <button class="company-tab company2" data-company="2">Elesi</button>
@@ -582,7 +711,7 @@
             // After 3 seconds, show chat
             setTimeout(() => {
                 document.getElementById('welcome-message').style.display = 'none';
-                document.getElementById('chat-container').style.display = 'flex';
+                document.getElementById('chat-container').style.display = 'grid';
                 
                 // Update welcome message in chat
                 const welcomeMessage = `Welcome, ${userData.firstName}! How can I help you today?`;
@@ -615,7 +744,6 @@
         // DOM elements
         const companyTabs = document.querySelectorAll('.company-tab');
         const chatHeader = document.getElementById('chat-header').querySelector('h2');
-        const chatContainer = document.getElementById('chat-container');
         const chatMessages = document.getElementById('chat-messages');
         const chatInput = document.getElementById('chat-input');
         const sendBtn = document.getElementById('send-btn');
@@ -636,9 +764,6 @@
                 
                 // Update chat header
                 chatHeader.textContent = `Chat with ${companies[companyId].name}`;
-                
-                // Update theme
-                chatContainer.className = `company${companyId}-theme`;
                 
                 // Load chat history for this company
                 currentCompany = companyId;
