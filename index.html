@@ -1,0 +1,22 @@
+submitReportBtn.addEventListener('click', function() {
+    const reportText = document.getElementById('report-text').value.trim();
+    if (reportText) {
+        // Wysyłanie do endpointu raportów dla aktualnej firmy
+        fetch(companies[currentCompany].reportEndpoint, {
+            method: 'POST',
+            body: JSON.stringify({
+                report: reportText,
+                user: userData,
+                company: companies[currentCompany].name
+            }),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(() => {
+            thankYouMessage.style.display = 'block';
+            setTimeout(() => { thankYouMessage.style.display = 'none'; }, 3000);
+        });
+        
+        document.getElementById('report-text').value = '';
+        reportModal.style.display = 'none';
+    }
+});
