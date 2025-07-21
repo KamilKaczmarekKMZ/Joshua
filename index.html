@@ -170,7 +170,7 @@
             color: var(--gold-accent);
             font-size: 1rem;
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
+            transition: var(--transition-all);
             background: radial-gradient(
                 100% 45% at 100% 50%,
                 rgba(255, 224, 166, 0.084) 0%,
@@ -187,6 +187,7 @@
             opacity: 0.5;
             pointer-events: none;
             margin-top: 0.5rem;
+            transform-origin: center;
         }
 
         #continue-btn.active {
@@ -195,26 +196,22 @@
         }
 
         #continue-btn:hover {
-            animation: flicker 0.5s infinite;
-            width: 105%;
+            transform: scale(1.02);
+            background: radial-gradient(
+                100% 45% at 100% 50%,
+                rgba(255, 224, 166, 0.15) 0%,
+                rgba(115, 115, 115, 0) 100%
+                ),
+                radial-gradient(
+                100% 45% at 0% 50%,
+                rgba(255, 224, 166, 0.15) 0%,
+                rgba(115, 115, 115, 0) 100%
+                );
+            box-shadow: 0 0 15px rgba(255, 224, 166, 0.2);
         }
 
         #continue-btn:active {
-            width: 95%;
-        }
-
-        @keyframes flicker {
-            0% { filter: brightness(100%); }
-            10% { filter: brightness(80%); }
-            20% { filter: brightness(120%); }
-            30% { filter: brightness(90%); }
-            40% { filter: brightness(110%); }
-            50% { filter: brightness(100%); }
-            60% { filter: brightness(85%); }
-            70% { filter: brightness(95%); }
-            80% { filter: brightness(105%); }
-            90% { filter: brightness(115%); }
-            100% { filter: brightness(100%); }
+            transform: scale(0.98);
         }
 
         /* Welcome Message */
