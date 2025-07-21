@@ -36,23 +36,28 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
         body {
             background-color: var(--bg-color);
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
         }
 
         /* Formularz */
         #user-form {
             width: 100%;
             max-width: 450px;
-            padding: 2rem;
+            max-height: 100vh;
+            padding: 1.5rem;
             display: grid;
             place-items: center;
-            gap: 1.5rem;
+            gap: 1rem;
             border: 1px solid transparent;
             border-image: linear-gradient(transparent, var(--gold-accent), transparent) 1;
             border-width: 0 2px 0px 2px;
@@ -67,6 +72,7 @@
                 transparent 100%
                 );
             position: relative;
+            overflow-y: auto;
         }
 
         #user-form::before,
@@ -93,13 +99,13 @@
             font-size: clamp(1.5rem, 4vw, 2rem);
             font-weight: 700;
             text-align: center;
-            letter-spacing: 0.5rem;
+            letter-spacing: 0.3rem;
             text-transform: uppercase;
             background: linear-gradient(rgb(210, 210, 210), rgb(150, 150, 150));
             color: transparent;
             -webkit-background-clip: text;
             background-clip: text;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .form-header h3 {
@@ -113,7 +119,7 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .form-group label {
@@ -131,7 +137,7 @@
                 rgba(0, 0, 0, 0) 100%
             ) 1;
             border-width: 0 0 1px 0;
-            padding: 0.8rem 1rem;
+            padding: 0.7rem 0.9rem;
             color: white;
             font-size: 1rem;
             transition: var(--transition-all);
@@ -154,7 +160,7 @@
             position: relative;
             background: none;
             border: none;
-            padding: 1rem;
+            padding: 0.8rem;
             color: var(--gold-accent);
             font-size: 1rem;
             cursor: pointer;
@@ -221,10 +227,10 @@
 
         .welcome-content {
             background: var(--card-bg);
-            padding: 30px;
+            padding: 25px;
             border-radius: 16px;
             max-width: 400px;
-            width: 100%;
+            width: 90%;
             text-align: center;
             animation: fadeIn 0.3s ease-out;
             border: 1px solid var(--gold-accent);
@@ -241,14 +247,15 @@
             font-size: clamp(0.9rem, 3vw, 1rem);
         }
 
-        /* Nowy styl Chat Container */
+        /* Chat Container */
         #chat-container {
             display: none;
             width: 100%;
             height: 100vh;
-            padding: 1rem;
+            max-height: -webkit-fill-available;
+            padding: 0.5rem;
             grid-template-rows: auto auto 1fr auto;
-            gap: 1rem;
+            gap: 0.5rem;
             border: 1px solid transparent;
             border-image: linear-gradient(transparent, var(--gold-accent), transparent) 1;
             border-width: 0 2px 0px 2px;
@@ -263,6 +270,7 @@
                 transparent 100%
                 );
             position: relative;
+            overflow: hidden;
         }
 
         #chat-container::before,
@@ -290,7 +298,7 @@
             background: transparent;
             padding: 0;
             border-bottom: 1px solid rgba(255, 224, 166, 0.1);
-            padding-bottom: 1rem;
+            padding-bottom: 0.5rem;
             overflow-x: auto;
             scrollbar-width: none;
             -ms-overflow-style: none;
@@ -302,8 +310,8 @@
 
         .company-tab {
             flex: 1 0 auto;
-            min-width: 100px;
-            padding: 8px 5px;
+            min-width: 80px;
+            padding: 6px 4px;
             text-align: center;
             border-radius: 4px;
             cursor: pointer;
@@ -338,7 +346,7 @@
             align-items: center;
             justify-content: space-between;
             border-bottom: 1px solid rgba(255, 224, 166, 0.1);
-            padding-bottom: 1rem;
+            padding-bottom: 0.5rem;
         }
 
         #chat-header h2 {
@@ -366,19 +374,16 @@
 
         #chat-messages {
             flex-grow: 1;
-            padding: 1rem 0;
+            padding: 0.5rem 0;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             border-bottom: 1px solid rgba(255, 224, 166, 0.1);
-            
-            /* Custom scrollbar styles */
             scrollbar-width: thin;
             scrollbar-color: var(--gold-accent) transparent;
         }
 
-        /* Custom scrollbar for WebKit browsers */
         #chat-messages::-webkit-scrollbar {
             width: 6px;
         }
@@ -398,8 +403,8 @@
         }
 
         .message {
-            max-width: 85%;
-            padding: 10px 14px;
+            max-width: 90%;
+            padding: 8px 12px;
             border-radius: 8px;
             line-height: 1.4;
             font-size: clamp(0.85rem, 3vw, 0.95rem);
@@ -436,14 +441,14 @@
             display: flex;
             padding: 0;
             background: transparent;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
-            padding-top: 1rem;
+            padding-top: 0.5rem;
         }
 
         #chat-input {
             flex-grow: 1;
-            padding: 10px 14px;
+            padding: 10px 12px;
             border-radius: 4px;
             outline: none;
             font-size: clamp(0.85rem, 3vw, 0.95rem);
@@ -470,8 +475,8 @@
             background: rgba(255, 224, 166, 0.1);
             color: var(--gold-accent);
             border: 1px solid rgba(255, 224, 166, 0.2);
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 4px;
             cursor: pointer;
             display: flex;
@@ -506,7 +511,7 @@
             padding: 20px;
             border-radius: 16px;
             max-width: 400px;
-            width: 100%;
+            width: 90%;
             animation: fadeIn 0.3s ease-out;
             border: 1px solid var(--error-color);
         }
@@ -525,7 +530,7 @@
 
         #report-text {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             margin-bottom: 15px;
@@ -543,7 +548,7 @@
         }
 
         .report-btn {
-            padding: 8px 16px;
+            padding: 8px 12px;
             border-radius: 8px;
             cursor: pointer;
             transition: var(--transition-all);
@@ -569,7 +574,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: var(--card-bg);
-            padding: 20px 30px;
+            padding: 15px 25px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             z-index: 1001;
@@ -601,7 +606,7 @@
 
         .typing-indicator {
             display: inline-flex;
-            padding: 10px 14px;
+            padding: 8px 12px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
             align-self: flex-start;
@@ -620,75 +625,44 @@
         .typing-dot:nth-child(2) { animation-delay: 0.2s; }
         .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
-        /* Media queries for responsive adjustments */
-        @media (max-width: 768px) {
-            #user-form {
-                padding: 1.5rem;
-                gap: 1rem;
-            }
-            
-            .form-header h2 {
-                letter-spacing: 0.3rem;
-                margin-bottom: 0.5rem;
-            }
-            
-            #chat-container {
-                padding: 0.5rem;
-                grid-template-rows: auto auto 1fr auto;
-                gap: 0.5rem;
-            }
-            
-            .company-tab {
-                min-width: 80px;
-                padding: 6px 4px;
-            }
-            
-            .message {
-                max-width: 90%;
-                padding: 8px 12px;
-            }
-            
-            #chat-input-container {
-                padding-top: 0.5rem;
-            }
-            
-            #send-btn, #report-btn {
-                width: 36px;
-                height: 36px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-            
+        /* Mobile-specific adjustments */
+        @media (max-height: 700px) {
             #user-form {
                 padding: 1rem;
+                gap: 0.8rem;
             }
             
             .form-header h2 {
                 letter-spacing: 0.2rem;
+                margin-bottom: 0.3rem;
+            }
+            
+            .form-group {
+                gap: 4px;
             }
             
             .form-group input {
-                padding: 0.7rem 0.9rem;
+                padding: 0.6rem 0.8rem;
             }
             
             #continue-btn {
+                padding: 0.7rem;
+            }
+        }
+
+        @media (max-height: 600px) {
+            #user-form {
                 padding: 0.8rem;
+                gap: 0.6rem;
             }
             
-            #chat-messages {
-                gap: 6px;
+            .form-header h2 {
+                font-size: clamp(1.2rem, 4vw, 1.5rem);
+                letter-spacing: 0.1rem;
             }
             
-            .message {
-                max-width: 95%;
-            }
-            
-            .report-content {
-                padding: 15px;
+            .form-group input {
+                padding: 0.5rem 0.7rem;
             }
         }
     </style>
