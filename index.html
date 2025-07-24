@@ -983,23 +983,36 @@
             const endpoint = companies[currentCompany].endpoint;
             const payload = {
                 message: message,
-                user: userData
+                user: userData,
+                company: companies[currentCompany].name,
+                timestamp: new Date().toISOString()
             };
             
-            // Simulate API call (replace with actual fetch)
-            setTimeout(() => {
-                // This is a mock response - in a real app, you would get this from your backend
-                const mockResponses = [
-                    "Thanks for your message! We'll get back to you soon.",
-                    "I understand your question. Let me check that for you.",
-                    "Our team is looking into this. Can you provide more details?",
-                    "That's a great question! Here's what I can tell you...",
-                    "I've forwarded your request to our support team."
-                ];
-                
-                const randomResponse = mockResponses[Math.floor(Math.random() * mockResponses.length)];
-                addBotResponse(randomResponse);
-            }, 1500);
+            fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle successful response from webhook
+                if (data.response) {
+                    addBotResponse(data.response);
+                } else {
+                    addBotResponse("Thanks for your message! We'll get back to you soon.");
+                }
+            })
+            .catch(error => {
+                console.error('Error sending message:', error);
+                addBotResponse("Sorry, there was an error sending your message. Please try again.");
+            });
         }
 
         // Event listeners
